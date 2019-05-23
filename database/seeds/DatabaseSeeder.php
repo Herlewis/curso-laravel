@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Permiso;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+    
         // $this->call(UsersTableSeeder::class);
+        $this->truncateTablas([
+            'rol',
+            'permiso'
+        ]);
+        $this->call(TablaRolSeeder::class);
+        $this->call(TablaPermisoSeeder::class);
+    }
+
+    protected function truncateTablas(array $tablas)
+    {
+        DB::Statement('SET FOREIGN_KEY_CHECKS = 0;');
+        foreach($tablas as $tabla){
+            DB::table($tabla)->truncate();
+        }
+        DB::Statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }
